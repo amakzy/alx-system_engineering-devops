@@ -3,7 +3,7 @@
 $data = "# Sample SSH Configuration File
 
 Host alx_server
-    HostName 100.25.46.33
+    HostName 18.209.223.65
     User ubuntu
     IdentityFile ~/.ssh/school
 	
