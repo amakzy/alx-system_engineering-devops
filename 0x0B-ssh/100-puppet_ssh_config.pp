@@ -1,17 +1,13 @@
-# Create a 
+# set up client ssh config to connect to server without typing password
 
-$data = "# Sample SSH Configuration File
+file_line { 'PasswordAuthentication':
+  ensure => 'present',
+  path   => '/etc/ssh/ssh_config',
+  line   => 'PasswordAuthentication no',
+}
 
-Host alx_server
-    HostName 18.209.223.65
-    User ubuntu
-    IdentityFile ~/.ssh/school
-	
-# Disable password authentication globally
-PasswordAuthentication no"
-
-file { 'ssh_config':
-  ensure  => 'present',
-  path => '~/.ssh/config',
-  content => $data,
+file_line { 'IdentityFile':
+  ensure => 'present',
+  path   => '/etc/ssh/ssh_config',
+  line   => 'IdentityFile ~/.ssh/school',
 }
