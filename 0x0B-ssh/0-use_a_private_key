@@ -1,7 +1,4 @@
 #!/usr/bin/env bash
-# Bash script that uses ssh to connect to your server using the private key
-# Connect to the server using single-character flags
-ssh -i ~/.ssh/school ubuntu@18.209.223.65
+# Bash script that uses ssh to connect to server18.209.223.65 using the private key in ~/.ssh/school
 
-# Wait for the user to exit the session
-echo "Connection to 8.8.8.8 closed."
+ssh -i ~/.ssh/school ubuntu@18.209.223.65
