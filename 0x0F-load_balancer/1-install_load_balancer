@@ -1,10 +1,37 @@
 #!/usr/bin/env bash
-# This script installs a load balancer haproxy and configures it
+# Update and upgrade the system
+apt update && apt upgrade -y
 
-sudo apt-get -y install --no-install-recommends software-properties-common
-sudo add-apt-repository -y ppa:vbernat/haproxy-2.6
-sudo apt-get -y update
-sudo apt-get -y install haproxy
-sed -i -e '$aENABLED=1\n' /etc/default/haproxy
-sed -i -e '$a\listen balancer\n\tbind :80\n\tbalance roundrobin\n\tserver 248562-web-01 18.209.233.65 check\n\tserver 248562-web-02 35.175.65.54 check\n' /etc/haproxy/haproxy.cfg
-sudo service haproxy restart
+# Install HAProxy
+apt install haproxy -y
+
+# Create a backup of the default HAProxy configuration file
+cp /etc/haproxy/haproxy.cfg /etc/haproxy/haproxy.cfg.bak
+
+# Replace the default HAProxy configuration with a new one
+cat << EOF > /etc/haproxy/haproxy.cfg
+global
+    log /dev/log local0.
+    daemon
+
+defaults
+    mode    http
+    option  httplog
+    option  dontlognull
+
+frontend  web
+    bind *:80
+    option  httplog
+    default_backend webservers
+
+backend webservers
+    balance roundrobin
+    server 248562-web-01 18.209.233.65:80 check
+    server 248562-web-02 35.175.65.54:80 check
+EOF
+
+# Restart HAProxy
+systemctl restart haproxy
+
+# Enable HAProxy at boot time
+systemctl enable haproxy
