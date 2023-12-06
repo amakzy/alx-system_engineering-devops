@@ -35,3 +35,6 @@ systemctl restart haproxy
 
 # Enable HAProxy at boot time
 systemctl enable haproxy
+
+# Check if web servers are present in the configuration
+grep -E "web-01|web-02" /etc/haproxy/haproxy.cfg
