@@ -10,36 +10,32 @@ import requests
 
 def top_ten(subreddit):
     """
-    Fetches titles of the top 10 hot posts from a given subreddit.
+    Queries the Reddit API for the top
+    10 hot posts of a subreddit and
+    prints their titles.
 
     Args:
         subreddit (str): The name of the subreddit to search.
 
-    Prints:
-        None: If the subreddit is invalid or there's an error.
-        Titles (str): Titles of the top 10 hot posts, one per line.
+    Returns:
+        None
     """
 
     url = f"https://reddit.com/r/{subreddit}/hot.json?limit=10"
+    headers = {"User-Agent": "My Reddit API Script v1.0"}
 
     try:
-        response = requests.get(url, allow_redirects=False)
+        response = requests.get(url, headers=headers, allow_redirects=False)
         response.raise_for_status()
+
+        data = response.json()
+        if "data" in data and "children" in data["data"]:
+            for post in data["data"]["children"][:10]:
+                print(post["data"]["title"])
+        else:
+            print("Subreddit not found or invalid response format.")
+
     except requests.exceptions.RequestException as e:
         print(f"An error occurred: {e}")
-        return None
-
-    data = response.json()
-
-    if "data" not in data or "children" not in data["data"]:
-        print("Invalid subreddit or unable to fetch data.")
-        return None
-
-    posts = data["data"]["children"]
-    for post in posts:
-        print(post["data"]["title"])
-
-
-if __name__ == "__main__":
-    # Module is being run directly, not imported
-    print("This module is intended to be imported, not run directly.")
+    except KeyError as e:
+        print(f"Invalid JSON response: Missing key {e}")
