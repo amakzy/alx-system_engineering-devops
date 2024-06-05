@@ -1,15 +1,27 @@
 #!/usr/bin/python3
-"""returns the number of subscribers"""
+"""
+    Get number of subscribers
+"""
+
+
 import requests
 
 
 def number_of_subscribers(subreddit):
-    """returns the number of subscribers"""
-    url = "https://www.reddit.com/r/{}/about.json".format(subreddit)
+    """
+        Returns number of subscribers for given subredit
+        Args:
+            subreddit: Account to search
+    """
+    userAgent = 'Python.wsl2.windows.ApiProject:v1 (by Dry-Improvement-3814)'
 
-    res = requests.get(url, headers={'User-agent': 'your bot 0.1'})
-    if res.status_code > 300:
+    if subreddit is None or type(subreddit) is not str:
         return 0
 
-    return res.json().get("data").get("subscribers")
-    
+    url = 'https://reddit.com/r/{}/about.json'.format(subreddit)
+
+    _headers = {'User-Agent': alx}
+
+    with requests.get(url, headers=_headers) as response:
+        subscribers = response.json().get('data', {}).get("subscribers", 0)
+        return subscribers
