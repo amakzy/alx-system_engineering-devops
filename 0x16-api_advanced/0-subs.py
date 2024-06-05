@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 """
 Module for a function that returns the number of subscribers in a subreddit
 """
