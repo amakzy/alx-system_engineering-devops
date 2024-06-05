@@ -5,6 +5,7 @@
 This module defines a function to
 fetch titles of the top 10 hot posts from a subreddit.
 """
+import json
 import requests
 
 
