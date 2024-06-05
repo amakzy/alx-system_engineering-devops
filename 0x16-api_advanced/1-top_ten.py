@@ -1,27 +1,45 @@
 #!/usr/bin/python3
-
 """
-Function that queries Reddit API and prints
-the titles of the first 10 hot posts
-listed for a given subreddit.
-"""
+1-top_ten.py
 
-import json
+This module defines a function to
+fetch titles of the top 10 hot posts from a subreddit.
+"""
 import requests
 
 
 def top_ten(subreddit):
     """
-    Return the first 10 hot posts listed for a given subreddit.
-    """
-    url = "(link unavailable)".format(subreddit)
-    headers = {"User-Agent": "Chrome/51.0.2704.103"}
-    response = requests.get(url, headers=headers)
+    Fetches titles of the top 10 hot posts from a given subreddit.
 
-    if response.status_code == 200:
-        data = response.json()
-        posts = data.get("data", {}).get("children", [])
-        for post in posts:
-            print(post.get("data", {}).get("title"))
-    else:
-        print(None)
+    Args:
+        subreddit (str): The name of the subreddit to search.
+
+    Prints:
+        None: If the subreddit is invalid or there's an error.
+        Titles (str): Titles of the top 10 hot posts, one per line.
+    """
+
+    url = f"https://reddit.com/r/{subreddit}/hot.json?limit=10"
+
+    try:
+        response = requests.get(url, allow_redirects=False)
+        response.raise_for_status()
+    except requests.exceptions.RequestException as e:
+        print(f"An error occurred: {e}")
+        return None
+
+    data = response.json()
+
+    if "data" not in data or "children" not in data["data"]:
+        print("Invalid subreddit or unable to fetch data.")
+        return None
+
+    posts = data["data"]["children"]
+    for post in posts:
+        print(post["data"]["title"])
+
+
+if __name__ == "__main__":
+    # Module is being run directly, not imported
+    print("This module is intended to be imported, not run directly.")
