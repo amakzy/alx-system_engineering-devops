@@ -1,18 +1,27 @@
 #!/usr/bin/python3
-'''fxn that queries Reddit API and returns the number of subscribers.
-'''
+"""
+    Get number of subscribers
+"""
 
-import json
+
 import requests
 
 
 def number_of_subscribers(subreddit):
-    """Return the number of subscribers"""
-    URL = "https://www.reddit.com/r/{}/about/.json".format(subreddit)
-    headers = {'User-Agent': 'Chrome/51.0.2704.103'}
-    r = requests.get(URL, headers=headers)
-    if r.status_code == 200:
-        r = r.json()
-        return r['data']['subscribers']
-    else:
+    """
+        Returns number of subscribers for given subredit
+        Args:
+            subreddit: Account to search
+    """
+    userAgent = 'Python.wsl2.windows.ApiProject:v1 (by Dry-Improvement-3814)'
+
+    if subreddit is None or type(subreddit) is not str:
         return 0
+
+    url = 'https://reddit.com/r/{}/about.json'.format(subreddit)
+
+    _headers = {'User-Agent': userAgent}
+
+    with requests.get(url, headers=_headers) as response:
+        subscribers = response.json().get('data', {}).get("subscribers", 0)
+        return subscribers
