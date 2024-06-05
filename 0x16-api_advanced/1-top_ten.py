@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 """print the titles"""
+import json
 import requests
 
 
