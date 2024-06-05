@@ -1,27 +1,26 @@
 #!/usr/bin/python3
-"""
-    Get number of subscribers
-"""
-
-
+"""Description of module"""
 import requests
 
 
 def number_of_subscribers(subreddit):
     """
-        Returns number of subscribers for given subredit
-        Args:
-            subreddit: Account to search
+    queries the Reddit API and returns the number of subscribers (not active
+    users, total subscribers) for a given subreddit. If an invalid subreddit
+    is given, the function should return 0.
+
+    Hint: No authentication is necessary for most features of the Reddit API.
+    If you’re getting errors related to Too Many Requests, ensure you’re
+    setting a custom User-Agent.
+    :param subreddit:
+    :return: Number of subscribers or 0
     """
-    userAgent = 'Python.wsl2.windows.ApiProject:v1 (by Dry-Improvement-3814)'
-
-    if subreddit is None or type(subreddit) is not str:
-        return 0
-
-    url = 'https://reddit.com/r/{}/about.json'.format(subreddit)
-
-    _headers = {'User-Agent': userAgent}
-
-    with requests.get(url, headers=_headers) as response:
-        subscribers = response.json().get('data', {}).get("subscribers", 0)
-        return subscribers
+    url = "https://www.reddit.com/r/{sub}/about.json".format(sub=subreddit)
+    headers = {
+        'User-Agent': 'ALX API Fetcher',
+    }
+    info = requests.get(url, headers=headers, allow_redirects=False)
+    if info.status_code == 200:
+        data = info.json()
+        return data.get("data").get("subscribers")
+    return 0
