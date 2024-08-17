@@ -1,7 +1,7 @@
 # Sample SSH Configuration File
 
 Host alx_server
-    HostName 18.209.223.65
+    HostName 18.207.2.60
     IdentityFile ~/.ssh/school
 	
 # Disable password authentication globally
