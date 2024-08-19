@@ -46,6 +46,6 @@ frontend amakxy-frontend-https
 
 backend amakxy-backend
         balance roundrobin
-        server 248562-web-01 18.209.223.65:80 check
-        server 248562-web-02 35.175.65.54:80 check
+        server 248562-web-01 34.224.2.100:80 check
+        server 248562-web-02 3.84.255.112:80 check
                                                                                                                                    50,50         Bot
